@@ -1,0 +1,142 @@
+<template name="more_options">
+  <span id="rmv_option" class="fui-cross-circle btn btn-danger"></span>
+  <span id="add_option" class="fui-plus-circle btn btn-success"></span>
+</template>
+
+<template name="datepicker">
+  <div class="input-group datetimepicker">
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+    <input id="datepicker" class="set-due-date form-control" placeholder="Date" type="text"/>
+  </div>
+</template>
+
+<template name="timelimit">
+  <select id="hour_limit" class="form-control select select-primary time_limit_input" data-toggle="select">
+    {{#each hours}}
+      <option value="{{this}}">{{this}} Hour(s)</option>
+    {{/each}}
+  </select>
+  <select id="day_limit" class="form-control select select-primary time_limit_input" data-toggle="select">
+    {{#each days}}
+      <option value="{{this}}">{{this}} Day(s)</option>
+    {{/each}}
+  </select>
+</template>
+
+<template name="registerVoter">
+  <section id="register" name="registerVoter" style="background-color: #2979af;">
+    <div name="poll_section" class="covering">
+      <div class="create_title">
+        <h1>Register voter</h1>
+      </div>
+      <div class="container-fluid table-class">
+        <div class="black">
+          <div class="inner cover">
+            <div class="centerUp">
+              <div class="questionaire">
+                <form>
+                  <ul>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>Full name</h1>
+                      </label>
+                      <input type="text" maxlength="48" class="form-control getName make_btn_appear" id="full_name" placeholder="Full Name"  required="required" />
+                    </li>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>CIN</h1>
+                      </label>
+                      <input type="text" maxlength="48" class="form-control getName make_btn_appear" id="cin" placeholder="CIN"  required="required" />
+                    </li>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>Birthday</h1>
+                      </label>
+                      {{> datepicker}}
+                    </li>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>Gouvernerat</h1>
+                      </label>
+                      <input type="text" maxlength="48" class="form-control getName make_btn_appear" id="gouvernerat" placeholder="Gouvernerat"  required="required" />
+                    </li>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>Password</h1>
+                      </label>
+                      <input type="password" maxlength="48" class="form-control getName make_btn_appear" id="password" placeholder="Password"  required="required" />
+                    </li>
+
+                    <li class="form-group animated fadeInRightBig activate" data-color="#E1523D" data-percentage="20%">
+                      <label for="nameInput">
+                        <h1>Fake Password</h1>
+                      </label>
+                      <input type="password" maxlength="48" class="form-control getName make_btn_appear" id="fakePassword" placeholder="Fake Password"  required="required" />
+                    </li>
+
+                  </ul>
+                </form>
+              </div>
+              <button id="submitRegister" userid={{voter_id}} class="btn btn-success btn-lg">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+
+
+<template name="poll_listed">
+  {{#if countpolls}}
+  <div class="row polls_page">
+    {{#each six_polls}}
+      <div class="col-md-4">
+        <div class="poll_tile">
+          <div class="icon-holder">
+            <img src="vote-icon.png" alt="" class="icon">
+          </div>
+          <h4 class="heading">{{this.poll.name}}</h4>
+          <div class="description">
+            <div class="col-xs-12 vote_front">
+              {{#if this.poll.ready}}
+                <p class="title_poll_front" isready={{this.ready}} >This election is ready</p>
+              {{else}}
+                <p class="title_poll_front" isready={{this.ready}}>This election is not ready</p>
+              {{/if}}
+            </div>
+            {{#if this.poll.isOwner }}
+              {{#if and this.poll.isactive}}
+                <a href="{{pathFor route='stop'}}" class="fui-export btn btn-info open_vote_btn"> Stop</a>
+              {{else}}
+                <a href="{{pathFor route='vote'}}" class="fui-export btn btn-info open_vote_btn"> Start</a>
+              {{/if}}
+            {{else}}
+              {{#if and this.poll.isactive}}
+                <a href="{{pathFor route='voted'}}" class="fui-export btn btn-info open_vote_btn"> Vote</a>
+              {{else}}
+                <button id="registerVoter" pollid={{this._id}}  class="fui-export btn btn-info open_vote_btn">Add voter</button>
+              {{/if}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+
+  {{else}}
+  <div class="row polls_page">
+    <div class="container">
+      <div class="no_polls">
+        <h1>Nothing here<br>:(</h1>
+        <a href="#create" class="btn btn-info btn-lg btn-block no_pollsbtn">Create a Poll</a>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</template>
